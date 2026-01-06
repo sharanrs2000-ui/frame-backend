@@ -1,9 +1,6 @@
 // ================================
 // Reframe V1 - Backend Server
 // ================================
-app.get("/", (req, res) => {
-  res.json({ status: "Reframe backend is running" });
-});
 
 require('dotenv').config();
 const express = require('express');
@@ -15,6 +12,16 @@ const OpenAI = require('openai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Root check
+app.get("/", (req, res) => {
+  res.json({ status: "Reframe backend is running" });
+});
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // ================================
 // OpenAI Configuration
@@ -645,4 +652,5 @@ app.listen(PORT, () => {
     console.log('========================================');
     console.log('Ready to accept connections');
 });
+
 

@@ -1,6 +1,9 @@
 // ================================
 // Reframe V1 - Backend Server
 // ================================
+app.get("/", (req, res) => {
+  res.json({ status: "Reframe backend is running" });
+});
 
 require('dotenv').config();
 const express = require('express');
@@ -642,3 +645,4 @@ app.listen(PORT, () => {
     console.log('========================================');
     console.log('Ready to accept connections');
 });
+

@@ -2,7 +2,9 @@
 // Reframe V1 - Backend Server
 // ================================
 
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
@@ -27,8 +29,12 @@ app.get('/api/health', (req, res) => {
 // OpenAI Configuration
 // ================================
 
+if (!process.env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is missing");
+}
+
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY || 'sk-placeholder'
+    apiKey: process.env.OPENAI_API_KEY
 });
 
 // Load model examples
@@ -652,5 +658,6 @@ app.listen(PORT, () => {
     console.log('========================================');
     console.log('Ready to accept connections');
 });
+
 
 

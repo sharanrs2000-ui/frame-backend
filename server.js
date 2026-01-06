@@ -53,18 +53,13 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: function (origin, callback) {
-        // allow requests with no origin (like curl, health checks)
         if (!origin) return callback(null, true);
-
         if (allowedOrigins.includes(origin)) {
             return callback(null, true);
         }
-
-        return callback(new Error('CORS not allowed for this origin'));
+        return callback(new Error('CORS not allowed'));
     },
-    credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    credentials: true
 }));
 
 app.use(express.json());
@@ -676,6 +671,7 @@ app.listen(PORT, () => {
     console.log('========================================');
     console.log('Ready to accept connections');
 });
+
 
 
 

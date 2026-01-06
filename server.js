@@ -44,9 +44,27 @@ const modelExamples = require('./model-examples.json');
 // Middleware
 // ================================
 
+const allowedOrigins = [
+    'https://reframe.co.in',
+    'https://www.reframe.co.in',
+    'https://frame-frontend-beta.vercel.app',
+    'http://localhost:8080'
+];
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:8080',
-    credentials: true
+    origin: function (origin, callback) {
+        // allow requests with no origin (like curl, health checks)
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error('CORS not allowed for this origin'));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
@@ -658,6 +676,7 @@ app.listen(PORT, () => {
     console.log('========================================');
     console.log('Ready to accept connections');
 });
+
 
 
 
